@@ -69,10 +69,20 @@ class Socialblade():
     def get_twitter_account_data(self, twitter_account):
         scraper = Scraper(window=True)
         url = f'https://socialblade.com/twitter/user/{twitter_account}/monthly'
-        data = scraper.extract_account_data(url)
+        data =''
+        try:
+            data = scraper.extract_account_data(url)
+        except:
+            print('problem scraping:', url)
         scraper.close_driver()
-        
+
         return data
 
-s = Socialblade()
-print(s.get_twitter_account_data('thetanarena'))
+    def get_twitter_accounts_data(self, tw_names):
+        twitter_data = {}
+        for key, tw in tw_names.items():
+            data = self.get_twitter_account_data(tw)
+            if data:
+                twitter_data[key] = data
+        return twitter_data
+
