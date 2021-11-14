@@ -1,2 +1,5 @@
 pycoingecko==2.2.0
 selenium==4.0.0
+tqdm==4.62.3
+pandas==1.3.4
+PrettyTable==2.4.0
