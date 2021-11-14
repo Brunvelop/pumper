@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  web:
+    image: python:3.7.11
+    ports:
+      - 80:80
+    volumes:
+      - ./:/
+    command: bash -c "
+      && pip install -r requirements.txt"
