@@ -14,4 +14,3 @@ class Coingeko():
                 days=days,
                 interval=interval
             )
-
