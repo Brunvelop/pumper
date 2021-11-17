@@ -34,11 +34,10 @@ class Scraper:
     def open_url(self, url):
         print('Oppening url: {}'.format(url))
         self.driver.get(url)
-        #WebDriverWait(self.driver, 1) #.until(EC.presence_of_element_located((By.ID, "myDynamicElement")))
-        sleep(2)
+        sleep(3)
+        #WebDriverWait(self.driver, 1).until(EC.presence_of_element_located((By.XPATH, '//div[@id="socialblade-user-content"]/div[5]')))
         action = ActionChains(self.driver)
         action.send_keys(Keys.TAB).send_keys(Keys.TAB).send_keys(Keys.TAB).send_keys(Keys.TAB).send_keys(Keys.TAB).send_keys(Keys.TAB).send_keys(Keys.ENTER).perform()
-        sleep(1)    
 
     def extract_account_data(self, url):
         self.open_url(url)
@@ -86,3 +85,7 @@ class Socialblade():
                 twitter_data[key] = data
         return twitter_data
 
+
+# s = Socialblade()
+# data = s.get_twitter_account_data('thetanarena')
+# print(data)

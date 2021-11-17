@@ -55,31 +55,35 @@ def get_table_followers_exp(df, last_n_days=''):
         if last_n_days:
             followers = followers[-last_n_days:-1]
             days = days[-last_n_days:-1]
-        regresion = np.polyfit(days, np.log(followers), 1)
+        if days.any() and followers.any():
+            regresion = np.polyfit(days, np.log(followers), 1)
 
-        regresion_curve = np.exp(regresion[1]) * np.exp(regresion[0]*days)
+            regresion_curve = np.exp(regresion[1]) * np.exp(regresion[0]*days)
 
-        mse = np.sqrt((np.square(followers - regresion_curve)).mean(axis=0))
-        mse_norm = mse/followers[-1]
-
-
-        today_increment = 100 * (followers[-1] - followers[-2])/followers[-2]
+            mse = np.sqrt((np.square(followers - regresion_curve)).mean(axis=0))
+            mse_norm = mse/followers[-1]
 
 
-        data.append(
-            [
-                regresion[0],
-                mse_norm,
-                mse,
-                today_increment,
-                coin
-            ]
-        )
+            today_increment = 100 * (followers[-1] - followers[-2])/followers[-2]
+
+
+            data.append(
+                [
+                    regresion[0],
+                    mse_norm,
+                    mse,
+                    today_increment,
+                    coin
+                ]
+            )
 
     t = PrettyTable(['COIN','e', 'mse_norm', 'mse', 'today %'])
     for data in sorted(data, reverse=True):
         t.add_row([data[-1], data[0], data[1], data[2], data[3]])
     print(t)
 
-df = pd.read_csv('database/df.csv')
-get_table_followers_exp(df,3)
+df = pd.read_csv('database/df_binance-smart-chain.csv')
+df = df.drop(df.index[df['coin'] == 'bdollar-share'])
+df = df.drop(df.index[df['coin'] == 'poker'])
+df = df.drop(df.index[df['coin'] == 'panda-yield'])
+get_table_followers_exp(df, last_n_days=3)
